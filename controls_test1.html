@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>three.js webgl - orbit controls</title>
+		<title>knoxCameraControls</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
@@ -36,13 +36,13 @@
 
 		<script src="js/lib/jquery-2.2.3.min.js"></script>
 
-		<script src="js/lib/threejs/build/three.min.js"></script>
+		<script src="js/lib/threejs/build/three.js"></script>
 		<script src="js/lib/threejs/KNOX/knox.js"></script>
 
 		
 		<script src="js/lib/threejs/assets/controls/OrbitControls.js"></script>
 		<script src="js/lib/threejs/assets/controls/DeviceOrientationControls.js"></script>
-		<script src="js/lib/threejs/KNOX/VRControls.js"></script>
+		<script src="js/lib/threejs/KNOX/knoxCameraControls.js"></script>
 
 		<script src="js/lib/threejs/assets/Detector.js"></script>
 		<script src="js/lib/threejs/assets/stats.min.js"></script>
@@ -54,7 +54,7 @@
 
 			var stats;
 
-			var camera, pivotingCamera, pivotingCameraStand, controls, scene, renderer;
+			var camera, pivotingCamera, pivotingCameraStand, knoxCameraControls, scene, renderer;
 
 			init();
 			animate();
@@ -73,22 +73,19 @@
 				container.appendChild( renderer.domElement );
 
 				camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
-				camera.position.z = 0.1;
 
-				pivotingCamera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
-				pivotingCamera.position.z = 0;
-				
-                pivotingCameraStand = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
-                pivotingCameraStand.position.z = 0.1;
                 
-                scene.add(pivotingCameraStand);
-                pivotingCameraStand.add(pivotingCamera);
-                pivotingCamera.add(camera)
 
                 window.addEventListener( 'touchstart', onDocumentTouchStart, false );
                 window.addEventListener( 'touchend', onDocumentTouchEnd, false );
 
-				controls = new KNOX.VRControls( pivotingCameraStand, pivotingCamera, camera, renderer.domElement );
+				knoxCameraControls = new KNOX.CameraControls(
+					scene, 
+					camera, 
+					new THREE.Vector3(0,0,0), 
+					new THREE.Vector3(0,0,-1), 
+					renderer.domElement 
+				);
 
 				// world
 
@@ -144,12 +141,7 @@
 
 				requestAnimationFrame( animate );
 				
-                if(controls)controls.update();
-                if(_log){
-                    var pos = {x:camera.position.x.toFixed(3), y:camera.position.y.toFixed(3), z:camera.position.z.toFixed(3)}
-                    var rot = {x:pivotingCamera.rotation.x.toFixed(3), y:pivotingCamera.rotation.y.toFixed(3), z:pivotingCamera.rotation.z.toFixed(3)}
-                    _log("pos: "+pos.x+" : "+pos.y+" : "+pos.z+" || rot: "+rot.x+" : "+rot.y+" : "+rot.z)
-                }
+                if(knoxCameraControls)knoxCameraControls.update();
 				stats.update();
 
 				render();
@@ -164,15 +156,11 @@
 
             
             function onDocumentTouchStart( event ) {
-                if(controls){
-                    controls.disableOrientation();
-                }
+
             }
             
             function onDocumentTouchEnd( event ) {
-                if(controls){
-                    controls.enableOrientation()
-                }
+
             }
 
 		</script>

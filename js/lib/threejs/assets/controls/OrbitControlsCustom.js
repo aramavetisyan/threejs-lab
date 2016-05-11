@@ -440,10 +440,10 @@ THREE.OrbitControls = function ( object, domElement ) {
 		var element = scope.domElement === document ? scope.domElement.body : scope.domElement;
 
 		// rotating across whole screen goes 360 degrees around
-		rotateLeft( 2 * Math.PI * rotateDelta.x / element.clientWidth * scope.rotateSpeed );
+		rotateLeft( 0.07 * -Math.PI * rotateDelta.x / element.clientWidth * scope.rotateSpeed );
 
 		// rotating up and down along whole screen attempts to go 360, but limited to 180
-		rotateUp( 2 * Math.PI * rotateDelta.y / element.clientHeight * scope.rotateSpeed );
+		rotateUp( 0.05 * -Math.PI * rotateDelta.y / element.clientHeight * scope.rotateSpeed );
 
 		rotateStart.copy( rotateEnd );
 
@@ -533,31 +533,89 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 	function handleKeyDown( event ) {
 
-		//console.log( 'handleKeyDown' );
+		console.log( 'handleKeyDown' );
 
-		switch ( event.keyCode ) {
+		var start = 0;
+		var end = 100;
+		var r = 0
+		var elem = {y: start, obj: r};
 
-			case scope.keys.UP:
-				pan( 0, scope.keyPanSpeed );
-				scope.update();
-				break;
+		var updateCallback = function () {
 
-			case scope.keys.BOTTOM:
-				pan( 0, - scope.keyPanSpeed );
-				scope.update();
-				break;
-
-			case scope.keys.LEFT:
-				pan( scope.keyPanSpeed, 0 );
-				scope.update();
-				break;
-
-			case scope.keys.RIGHT:
-				pan( - scope.keyPanSpeed, 0 );
-				scope.update();
-				break;
-
+			switch ( event.keyCode ) {
+				case scope.keys.UP:
+					rotateUp(-0.001);
+					scope.update();
+					break;
+				case scope.keys.BOTTOM:
+					rotateUp(0.001);
+					scope.update();
+					break;
+				case scope.keys.LEFT:
+					rotateLeft(-0.002);
+					scope.update();
+					break;
+				case scope.keys.RIGHT:
+					rotateLeft(0.002);
+					scope.update();
+			}
 		}
+
+		new TWEEN.Tween(elem)
+			.to({y: end}, 380)
+			.delay(0)
+			.onUpdate(updateCallback)
+			.easing(TWEEN.Easing.Linear.None)
+			.start();
+
+	}
+	
+	this.previewControls = function( ) {
+		
+		var start = 0;
+		var end = 50;
+		var r = 0
+		var elem = {y: start, obj: r};
+		scope.enableRotate = false;
+
+		var rot1 = new TWEEN.Tween(elem)
+			.to({y: end}, 800)
+			.delay(800)
+			.onUpdate(function () {
+					this.obj = this.y;
+					rotateLeft(-0.001);
+					scope.update();
+				}
+			)
+			.easing(TWEEN.Easing.Linear.None);
+
+		var rot2 = new TWEEN.Tween(elem)
+			.to({y: 4*end}, 1600)
+			.delay(100)
+			.onUpdate(function () {
+					this.obj = this.y;
+					rotateLeft(0.001);
+					scope.update();
+				}
+			)
+			.easing(TWEEN.Easing.Linear.None);
+		var rot3 = new TWEEN.Tween(elem)
+			.to({y: end}, 800)
+			.delay(100)
+			.onUpdate(function () {
+					this.obj = this.y;
+					rotateLeft(-0.001);
+					scope.update();
+				}
+			)
+			.onComplete(function(){
+				scope.enableRotate = true;
+			})
+			.easing(TWEEN.Easing.Linear.None);
+		rot1.chain(rot2);
+		rot2.chain(rot3);
+		rot1.start();
+
 
 	}
 
@@ -600,10 +658,10 @@ THREE.OrbitControls = function ( object, domElement ) {
 		var element = scope.domElement === document ? scope.domElement.body : scope.domElement;
 
 		// rotating across whole screen goes 360 degrees around
-		rotateLeft( 2 * Math.PI * rotateDelta.x / element.clientWidth * scope.rotateSpeed );
+		rotateLeft( 0.09 * -Math.PI * rotateDelta.x / element.clientWidth * scope.rotateSpeed );
 
 		// rotating up and down along whole screen attempts to go 360, but limited to 180
-		rotateUp( 2 * Math.PI * rotateDelta.y / element.clientHeight * scope.rotateSpeed );
+		rotateUp( 0.07 * -Math.PI * rotateDelta.y / element.clientHeight * scope.rotateSpeed );
 
 		rotateStart.copy( rotateEnd );
 
@@ -770,7 +828,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 	function onKeyDown( event ) {
 
-		if ( scope.enabled === false || scope.enableKeys === false || scope.enablePan === false ) return;
+		if ( scope.enabled === false || scope.enableKeys === false  ) return;
 
 		handleKeyDown( event );
 

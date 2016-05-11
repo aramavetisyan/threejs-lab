@@ -12,8 +12,8 @@
 
 KNOX.CameraControls = function(scene, camera, position, offset, domElement ) {
 	
-    var horizontalPivot 					= new THREE.PerspectiveCamera( camera.fov , camera.aspect, camera.near, camera.far);
-    var verticalPivot 					    = new THREE.PerspectiveCamera( camera.fov , camera.aspect, camera.near, camera.far);
+    var horizontalPivot = new THREE.PerspectiveCamera( camera.fov , camera.aspect, camera.near, camera.far);
+    var verticalPivot = new THREE.PerspectiveCamera( camera.fov , camera.aspect, camera.near, camera.far);
     
     camera.position.copy(offset);
     horizontalPivot.position.copy(offset);
@@ -23,39 +23,39 @@ KNOX.CameraControls = function(scene, camera, position, offset, domElement ) {
     horizontalPivot.add(verticalPivot);
     verticalPivot.add(camera)
     
-    this.orientationControl 					= null;
+    this.orientationControl = null;
     
-    this.dragControlVertical 					= new THREE.OrbitControls( camera, domElement );
-    this.dragControlVertical.target				= position;
-	this.dragControlVertical.minAzimuthAngle    = 0; 
-    this.dragControlVertical.maxAzimuthAngle    = 0;
-	this.dragControlVertical.enableDamping      = true;
-	this.dragControlVertical.dampingFactor      = 0.10;
-	this.dragControlVertical.enableZoom         = false;
+    this.dragControlVertical = new THREE.OrbitControls( camera, domElement );
+    this.dragControlVertical.target = position;
+	this.dragControlVertical.minAzimuthAngle = 0; 
+    this.dragControlVertical.maxAzimuthAngle = 0;
+	this.dragControlVertical.enableDamping = true;
+	this.dragControlVertical.dampingFactor = 0.10;
+	this.dragControlVertical.enableZoom = false;
 	
-	this.dragControlHorizontal 					= new THREE.OrbitControls( horizontalPivot, domElement );
-    this.dragControlHorizontal.target			= position;
-	this.dragControlHorizontal.minPolarAngle  	= Math.PI/2; 
-    this.dragControlHorizontal.maxPolarAngle	= Math.PI/2;
-	this.dragControlHorizontal.enableDamping    = true;
-	this.dragControlHorizontal.dampingFactor    = 0.10;
-	this.dragControlHorizontal.enableZoom       = false;
+	this.dragControlHorizontal = new THREE.OrbitControls( horizontalPivot, domElement );
+    this.dragControlHorizontal.target = position;
+	this.dragControlHorizontal.minPolarAngle = Math.PI/2; 
+    this.dragControlHorizontal.maxPolarAngle = Math.PI/2;
+	this.dragControlHorizontal.enableDamping = true;
+	this.dragControlHorizontal.dampingFactor = 0.10;
+	this.dragControlHorizontal.enableZoom = false;
 	
 	this.enableDrag = function(){
-	    scope.dragControlVertical.enabled       = true;
-	    scope.dragControlHorizontal.enabled     = true;
+	    scope.dragControlVertical.enabled = true;
+	    scope.dragControlHorizontal.enabled = true;
 	}	
 	
 	this.disableDrag = function(){
-	    scope.dragControlVertical.enabled       = false;
-	    scope.dragControlHorizontal.enabled     = false;
+	    scope.dragControlVertical.enabled = false;
+	    scope.dragControlHorizontal.enabled = false;
 	}	
 	this.enableOrientation = function(){
-	    scope.orientationControl.enabled        = true;
+	    scope.orientationControl.enabled = true;
 	}	
 	
 	this.disableOrientation = function(){
-	    scope.orientationControl.enabled        = false;
+	    scope.orientationControl.enabled = false;
 	}
 	
 	this.enable = function(){

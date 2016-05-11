@@ -1,8 +1,9 @@
 /**
  * 
- * Uses THREE.OrbitControls and THREE.DeviceOrientationControls libraries (see https://github.com/mrdoob/three.js/tree/master/examples/js/controls)
+ * Uses THREE.OrbitControlsCustom (modified for better UX) and THREE.DeviceOrientationControls libraries
  * Requires three cameras 
  * 
+ * scene		- THREE.Scene()
  * camera 		- THREE.PerspectiveCamera
  * position 	- THREE.Vector3
  * offset 		- THREE.Vector3

@@ -145,9 +145,4 @@ KNOX.CameraControls = function(scene, camera, position, offset, domElement ) {
 	}
 	var scope = this;
 	camera.updateMatrixWorld();
-	var viewPos = camera.position;
-	var vector = camera.position.clone();
-
-	console.log(camera.position);
-	console.log(camera.localToWorld(vector));
 }
